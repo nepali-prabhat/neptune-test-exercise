@@ -13,7 +13,7 @@ export default function ThemeToggle(props: {
         checked={props.value}
         type="checkbox"
         id="DarkModeToggle"
-        onClick={props.onToggle}
+        onChange={props.onToggle}
       />
       <div className={styles.toggle}>
         <SunFilled />

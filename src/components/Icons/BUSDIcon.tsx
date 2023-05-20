@@ -6,7 +6,7 @@ const height = 337.42 / rate;
 
 export function BUSDIcon() {
   return (
-    <i id="MoonStarFilled" data-size="md">
+    <i className="center" id="BUSDIcon" data-size="md">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 336.41 337.42"

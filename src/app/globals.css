@@ -108,6 +108,13 @@ a {
   line-height: 1.25rem;
   transition: background 150ms;
 }
+.btn-primary.w-full {
+  width: 100%;
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 @media (prefers-reduced-motion) {
   .btn-primary,
   body {

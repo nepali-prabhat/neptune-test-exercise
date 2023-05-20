@@ -13,8 +13,8 @@
   background: var(--card-rgb);
   transition: background 150ms;
 
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
-    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 205px -20px,
+    rgba(0, 0, 0, 0.3) 0px 40px 70px -30px;
 }
 @media (prefers-reduced-motion) {
   .card {

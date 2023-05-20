@@ -1,6 +1,6 @@
 export function MoonStarFilled() {
   return (
-    <i id="MoonStarFilled" data-size="md">
+    <i className="center" id="MoonStarFilled" data-size="md">
       <svg
         viewBox="0 0 12 12"
         fill="none"

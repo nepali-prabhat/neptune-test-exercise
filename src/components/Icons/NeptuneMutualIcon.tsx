@@ -5,7 +5,7 @@ const height = 154 / rate;
 
 export function NeptuneMutualIcon() {
   return (
-    <i id="MoonStarFilled" data-size="md" className="center">
+    <i className="center" id="NeptuneMutualIcon" data-size="md">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 154 154"

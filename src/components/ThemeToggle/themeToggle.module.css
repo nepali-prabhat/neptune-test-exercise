@@ -42,6 +42,7 @@
 .darkModeLabel input:focus + .toggle,
 .darkModeLabel input:focus-visible + .toggle {
   box-shadow: var(--focus-outline);
+  transition: none;
 }
 
 .darkModeLabel .toggle::before {

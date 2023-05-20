@@ -1,0 +1,96 @@
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.75;
+  background: rgb(25, 26, 48);
+  background: radial-gradient(
+    circle,
+    rgba(25, 26, 48, 1) 0%,
+    rgba(35, 45, 65, 1) 100%
+  );
+  position: fixed;
+  top: 0;
+  z-index: 99;
+}
+.card {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  padding: 1rem 1.2rem;
+
+  width: 60vw;
+  max-width: 600px;
+  min-width: 302px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  border-radius: var(--border-radius);
+  background: var(--card-rgb);
+
+  z-index: 100;
+}
+.card > div:first-of-type {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card > div:first-of-type h3 {
+  font-size: 1.25rem;
+  line-height: 2.5rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.card .closeButton {
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 0.5rem;
+  border: 4px solid var(--card-rgb);
+  background: var(--button-primary-bg);
+}
+
+.card .closeButton svg path {
+  fill: var(--button-foreground);
+  stroke: var(--button-foreground);
+}
+.card .disconnected {
+  text-align: center;
+}
+.card .disconnected + button {
+  margin-top: 0.5rem;
+}
+.card .connected .table .rowgroup span[role="columnheader"] {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.card .connected .table .rowgroup:nth-child(1) {
+  margin-bottom: 0.5rem;
+}
+.card .connected .table .footer {
+  font-size: 0.8rem;
+}
+
+.card .connected div[role="row"] > span[role="cell"] {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.card .connected div[role="row"] > span[role="columnheader"]:last-child,
+.card .connected div[role="row"] > span[role="cell"]:last-child {
+  text-align: end;
+}
+
+.card .connected div[role="row"] {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-between;
+}
+.card .connect {
+  margin-top: 0.5rem;
+}
