@@ -11,19 +11,6 @@ import { useBalances } from "@/hooks/useBalances";
 import { formatEther } from "ethers/lib/utils";
 import { useChainInfo } from "@/hooks/useChainInfo";
 
-function DisconnectedBody(props: { isInteractingWithConnector: boolean }) {
-  return (
-    <div className={styles.disconnected}>
-      <NoWalletIcon />
-      {props.isInteractingWithConnector ? (
-        <p>Connecting to wallet...</p>
-      ) : (
-        <p>Wallet is not connected.</p>
-      )}
-    </div>
-  );
-}
-
 function ConnectWalletComponent({ onClose }: { onClose: () => void }) {
   const isActive = web3MetamaskHooks.useIsActive();
   const chainId = web3MetamaskHooks.useChainId();
@@ -72,9 +59,14 @@ function ConnectWalletComponent({ onClose }: { onClose: () => void }) {
         </button>
       </div>
       {!isActive && (
-        <DisconnectedBody
-          isInteractingWithConnector={isInteractingWithConnector}
-        />
+        <div className={styles.disconnected}>
+          <NoWalletIcon />
+          {isInteractingWithConnector ? (
+            <p>Connecting to wallet...</p>
+          ) : (
+            <p>Wallet is not connected.</p>
+          )}
+        </div>
       )}
       {isActive && (
         <div className={styles.connected}>
@@ -82,6 +74,7 @@ function ConnectWalletComponent({ onClose }: { onClose: () => void }) {
             className={styles.table}
             role="table"
             aria-label="Account and Balance Table"
+            aria-describedby="account_balance_table_desc"
           >
             <div className={styles.rowgroup} role="rowgroup">
               <div role="row">
@@ -105,8 +98,9 @@ function ConnectWalletComponent({ onClose }: { onClose: () => void }) {
                 </div>
               ))}
             </div>
-            <div className={styles.footer}>
-              Connected chain is [{chainId}]: {chainInfo ? chainInfo.name + ": " : ""}
+            <div className={styles.footer} id="account_balance_table_desc">
+              Connected chain is <code>{chainId}</code>:{" "}
+              {chainInfo ? chainInfo.name + ": " : ""}
             </div>
           </div>
         </div>
