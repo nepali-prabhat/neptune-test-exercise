@@ -1,0 +1,70 @@
+.darkModeLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  scale: 0.8;
+}
+
+.darkModeLabel span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.darkModeLabel input {
+  opacity: 0;
+  position: absolute;
+}
+
+.darkModeLabel .toggle {
+  position: relative;
+  width: 43px;
+  height: 20px;
+  background: var(--button-primary-bg);
+  color: var(--button-foreground);
+  border-radius: 10px;
+  padding: 2px 4px;
+  transition: 300ms all;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.darkModeLabel .toggle path {
+  fill: var(--button-foreground);
+  stroke: var(--button-foreground);
+}
+
+.darkModeLabel:focus .toggle,
+.darkModeLabel input:focus + .toggle,
+.darkModeLabel input:focus-visible + .toggle {
+  box-shadow: var(--focus-outline);
+}
+
+.darkModeLabel .toggle::before {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  top: 50%;
+  left: 3px;
+  background: var(--button-foreground);
+  transform: translate(0, -50%);
+  transition: 300ms all;
+}
+
+.darkModeLabel input:checked + .toggle:before {
+  left: calc(100% - 3px);
+  transform: translate(-100%, -50%);
+}
+
+@media (prefers-reduced-motion) {
+  .darkModeLabel .toggle::before,
+  .darkModeLabel .toggle {
+    transition: none;
+  }
+}

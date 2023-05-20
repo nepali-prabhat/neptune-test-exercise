@@ -1,0 +1,29 @@
+.logo {
+  position: relative;
+  margin-bottom: 1.5rem;
+  width: 257.3333333333px !important;
+  height: auto;
+}
+.logo .logoDisc {
+  scale: 0.76;
+}
+.logo .logoText {
+  fill: var(--logo-color);
+}
+html[data-theme="dark"] .logo .logoDisc,
+html[data-theme="light"] .logo .logoCircle {
+  display: none;
+}
+html[data-theme="light"] .logo .logoDisc,
+html[data-theme="dark"] .logo .logoCircle {
+  display: block;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .logo {
+    width: 231.6px !important;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+}

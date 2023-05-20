@@ -1,0 +1,10 @@
+html[data-theme="dark"] .neptuneIcon .disc {
+  stroke: white;
+  stroke-width: 4px;
+  scale: 0.97;
+  transform-origin: 50% 50%;
+}
+.busdIcon path {
+  fill: var(--foreground-rgb);
+  stroke: var(--foreground-rgb);
+}

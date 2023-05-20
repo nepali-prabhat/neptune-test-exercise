@@ -1,0 +1,30 @@
+.inputContainer {
+  display: grid;
+  gap: 8px;
+  position: relative;
+}
+.inputContainer label {
+  font-size: 0.75rem;
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 0.25rem;
+  flex-direction: row-reverse;
+}
+.inputContainer input {
+  padding: 0.5rem 0.75rem;
+  background: var(--input-bg);
+  border-radius: 0.5rem;
+  color: var(--foreground-rgb);
+  border: none;
+  font-size: 1.25rem;
+}
+html[data-theme="dark"] .inputContainer input {
+  /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px inset; */
+}
+.inputContainer input::placeholder {
+  color: var(--foreground-rgb);
+  opacity: 0.33;
+}
