@@ -106,7 +106,7 @@ function WalletInfoUI() {
             <span role="cell">
               {formatBalance(balance, chainInfo.data, {
                 chainFallback: chainInfo.isLoading ? "..." : "",
-              })}
+              })||"-"}
             </span>
           </div>
         </div>
