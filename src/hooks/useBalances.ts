@@ -9,6 +9,7 @@ export function useBalances(
   const [balances, setBalances] = useState<BigNumber[] | undefined>();
 
   useEffect(() => {
+    console.log("accounts, provider changed ", accounts, provider);
     if (provider && accounts?.length) {
       let stale = false;
 
