@@ -83,14 +83,21 @@ function WalletInfoUI() {
 
 function ConnectWalletComponent({ onClose }: { onClose: () => void }) {
   const isActive = web3MetamaskHooks.useIsActive();
-
   const [isInteractingWithConnector, setIsInteractingWithConnector] =
     useState(false);
+  
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const actionBtnRef = useRef<HTMLButtonElement>(null);
 
+  // store value of is active in first render
+  // ... used to focus buttons on modal enter
+  const isActiveValue = useRef<boolean>();
+  if (isActiveValue.current === undefined) {
+    isActiveValue.current = isActive;
+  }
+
   useEffect(() => {
-    if (isActive) {
+    if (isActiveValue.current) {
       closeBtnRef.current?.focus();
     } else {
       actionBtnRef.current?.focus();
@@ -204,14 +211,6 @@ export default function ConnectWalletModal({
       document.body.removeEventListener("keydown", closeOnEscapeKey);
     };
   }, [onClose]);
-
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "unset";
-      document.body.style.overflowX = "hidden";
-    };
-  }, []);
 
   if (!isOpen) return null;
 

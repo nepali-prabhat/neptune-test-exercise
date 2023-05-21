@@ -9,7 +9,6 @@ export function useChainInfo(chainId?: number) {
 
   useEffect(() => {
     let stale = false;
-    console.log("chain id changed", chainId);
     if (chainId) {
       setIsLoading(true);
       // TODO: change how we get chains info
