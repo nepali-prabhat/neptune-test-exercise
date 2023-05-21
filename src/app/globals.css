@@ -39,16 +39,19 @@ html[data-theme="dark"] {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* --foreground-rgb: rgb(250, 250, 250);
-    --background-start-rgb: #1d1d1d;
-    --background-end-rgb: #1d1d1d;
+    --foreground-rgb: rgb(250, 250, 250);
+    --background: #15131d;
 
-    --card-rgb: #2b293a;
+    --card-rgb: #302e3f;
     --logo-color: white;
 
-    --button-primary-bg: var(--button-primary-light);
+    /* --button-primary-bg: var(--button-primary-light); */
+    --button-primary-bg: var(--foreground-rgb);
+    --button-foreground: var(--background);
 
-    --input-bg: #22222; */
+    --input-bg: #262433;
+    --focus-outline: rgb(0, 117, 250) 0px 1px 4px,
+      rgb(0, 117, 250) 0px 0px 0px 3px;
   }
 }
 
