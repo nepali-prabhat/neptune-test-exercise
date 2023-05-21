@@ -21,7 +21,7 @@
   padding: 1rem 1.2rem;
 
   width: 60vw;
-  max-width: 600px;
+  max-width: 500px;
   min-width: 302px;
 
   display: flex;
@@ -65,20 +65,19 @@
 .card .disconnected + button {
   margin-top: 0.5rem;
 }
-.card .connected .table .rowgroup span[role="columnheader"] {
-  font-weight: 600;
-  font-size: 0.9rem;
+.card .connected .table {
+  display: grid;
+  gap: 1rem;
 }
-.card .connected .table .rowgroup:nth-child(1) {
-  margin-bottom: 0.5rem;
-}
-.card .connected .table .footer {
+
+.card .connected div[role="row"] > span[role="cell"],
+.card .connected div[role="row"] > span[role="columnheader"] {
   font-size: 0.8rem;
 }
 
-.card .connected div[role="row"] > span[role="cell"] {
-  font-size: 0.8rem;
-  margin-bottom: 0.5rem;
+.card .connected div[role="row"] > span[role="cell"]:last-child,
+.card .connected div[role="row"] > span[role="columnheader"] {
+  font-weight: 600;
 }
 
 .card .connected div[role="row"] > span[role="columnheader"]:last-child,
@@ -90,7 +89,32 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-content: space-between;
+  align-items: center;
 }
+.card .connected .table .copySpan {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 4px;
+}
+
 .card .connect {
   margin-top: 0.5rem;
+}
+
+.card .copyBtn {
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  border: none;
+  z-index: 1;
+  background: transparent;
+  display: flex;
+}
+.copyBtn[data-copied=false] path {
+  stroke: var(--button-primary-bg);
+  fill: var(--button-primary-bg);
+}
+.copyBtn[data-copied=true] path {
+  stroke: var(--button-primary-bg);
 }

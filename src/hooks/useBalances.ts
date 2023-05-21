@@ -2,29 +2,26 @@ import { Web3ReactHooks } from "@web3-react/core";
 import { BigNumber } from "ethers";
 import { useState, useEffect } from "react";
 
-export function useBalances(
+export function useBalance(
   provider?: ReturnType<Web3ReactHooks["useProvider"]>,
-  accounts?: string[]
-): BigNumber[] | undefined {
-  const [balances, setBalances] = useState<BigNumber[] | undefined>();
+  account?: string
+) {
+  const [balance, setBalance] = useState<BigNumber | undefined>();
 
   useEffect(() => {
-    if (provider && accounts?.length) {
+    if (provider && account) {
       let stale = false;
-
-      void Promise.all(
-        accounts.map((account) => provider.getBalance(account))
-      ).then((balances) => {
+      provider.getBalance(account).then((balance) => {
         if (stale) return;
-        setBalances(balances);
+        setBalance(balance);
       });
 
       return () => {
         stale = true;
-        setBalances(undefined);
+        setBalance(undefined);
       };
     }
-  }, [provider, accounts]);
+  }, [provider, account]);
 
-  return balances;
+  return balance;
 }

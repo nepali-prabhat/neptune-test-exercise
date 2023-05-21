@@ -12,35 +12,69 @@ import {
   shortenAddress,
 } from "@/utils";
 import { web3Metamask, web3MetamaskHooks } from "@/connector";
-import { useBalances } from "@/hooks/useBalances";
+import { useBalance } from "@/hooks/useBalances";
 import { formatEther } from "ethers/lib/utils";
 import { useChainInfo } from "@/hooks/useChainInfo";
 import { LegacyRef } from "react";
+import CopyIcon from "../Icons/CopyIcon";
+import CheckIcon from "../Icons/CheckIcon";
 
-function WalletDisconnectedUI(props: { isLoading: boolean }) {
+function WalletDisconnectedUI() {
   return (
     <div className={styles.disconnected}>
       <NoWalletIcon />
-      {props.isLoading ? (
-        <p>Connecting to wallet...</p>
-      ) : (
-        <p>Wallet is not connected.</p>
-      )}
+      <p>Wallet is not connected.</p>
     </div>
+  );
+}
+
+function CopyButton(props: { account: string }) {
+  const [copied, setCopied] = useState(false);
+  const timeoutRef = useRef<any>();
+
+  useEffect(() => {
+    if (copied) {
+      const id = setTimeout(() => {
+        setCopied(false);
+      }, 5000);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = id;
+    }
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [copied]);
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(props.account);
+    setCopied(true);
+  };
+  return (
+    <button
+      className={styles.copyBtn}
+      onClick={handleCopyClick}
+      aria-label="Copy button"
+      data-copied={copied}
+    >
+      {copied ? <CheckIcon /> : <CopyIcon />}
+    </button>
   );
 }
 
 function WalletInfoUI() {
   const chainId = web3MetamaskHooks.useChainId();
-  const accounts = web3MetamaskHooks.useAccounts();
+  const account = web3MetamaskHooks.useAccount();
   const provider = web3MetamaskHooks.useProvider();
-  const balances = useBalances(provider, accounts);
+  const balance = useBalance(provider, account);
   const chainInfo = useChainInfo(chainId);
 
-  const [accountDisplay, setAccountDisplay] = useState<string[]>();
+  const [accountDisplay, setAccountDisplay] = useState<string>();
   useEffect(() => {
-    setAccountDisplay(accounts?.map(shortenAddress) ?? undefined);
-  }, [accounts]);
+    setAccountDisplay(account ? shortenAddress(account) : undefined);
+  }, [account]);
 
   return (
     <div className={styles.connected}>
@@ -48,33 +82,47 @@ function WalletInfoUI() {
         className={styles.table}
         role="table"
         aria-label="Account and Balance Table"
-        aria-describedby="account_balance_table_desc"
       >
         <div className={styles.rowgroup} role="rowgroup">
           <div role="row">
-            <span role="columnheader">Account</span>
-            <span role="columnheader">Balance</span>
+            <span role="columnheader">KEY</span>
+            <span role="columnheader">VALUE</span>
           </div>
         </div>
         <div className={styles.rowgroup} role="rowgroup">
-          {(accountDisplay || []).map((account, index) => (
-            <div key={`ACCOUNT_BALANCE_TABLLE_ROW_${index}`} role="row">
-              <span role="cell">{account}</span>
-              <span role="cell">
-                {formatBalance(balances?.[index], chainInfo.data, {
-                  chainFallback: chainInfo.isLoading ? "..." : "",
-                })}
-              </span>
-            </div>
-          ))}
+          <div role="row">
+            <span title="abd" role="cell">
+              Account:
+            </span>
+            <span className={styles.copySpan} title={account} role="cell">
+              {account && <CopyButton account={account} />}
+              <span>{accountDisplay}</span>
+            </span>
+          </div>
         </div>
-        <div className={styles.footer} id="account_balance_table_desc">
-          Connected chain is <code>{chainId}</code>
-          {chainInfo.isLoading
-            ? ": ..."
-            : chainInfo.data
-            ? ": " + chainInfo.data?.name
-            : ""}
+        <div className={styles.rowgroup} role="rowgroup">
+          <div role="row">
+            <span role="cell">Balance:</span>
+            <span role="cell">
+              {formatBalance(balance, chainInfo.data, {
+                chainFallback: chainInfo.isLoading ? "..." : "",
+              })}
+            </span>
+          </div>
+        </div>
+        <div className={styles.rowgroup} role="rowgroup">
+          <div role="row">
+            <span role="cell">Chain:</span>
+            <span role="cell">
+              {chainInfo.isError
+                ? chainId
+                : chainInfo.isLoading
+                ? `${chainId} ...`
+                : chainInfo.data
+                ? `${chainInfo.data.name} [${chainId}]`
+                : chainId}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -85,7 +133,7 @@ function ConnectWalletComponent({ onClose }: { onClose: () => void }) {
   const isActive = web3MetamaskHooks.useIsActive();
   const [isInteractingWithConnector, setIsInteractingWithConnector] =
     useState(false);
-  
+
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const actionBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -104,10 +152,7 @@ function ConnectWalletComponent({ onClose }: { onClose: () => void }) {
     }
   }, []);
 
-  const handleWalletActionClick: MouseEventHandler<HTMLButtonElement> = async (
-    e
-  ) => {
-    e.preventDefault();
+  const handleWalletActionClick = async () => {
     if (!hasMetaMaskExtensionInstalled()) {
       window.open(METAMASK_URL, "_blank") ||
         window.location.replace(METAMASK_URL);
@@ -124,7 +169,9 @@ function ConnectWalletComponent({ onClose }: { onClose: () => void }) {
     } catch (e: any) {
       // TODO: gracfully handle error
       if (typeof e === "object" && e?.code) {
-        alert(e.message);
+        alert(
+          `TODO: gracefully handle error. \nError message: ${e.message}(${e.code})`
+        );
       }
       console.debug(e);
     }
@@ -148,9 +195,7 @@ function ConnectWalletComponent({ onClose }: { onClose: () => void }) {
           <XIcon />
         </button>
       </div>
-      {!isActive && (
-        <WalletDisconnectedUI isLoading={isInteractingWithConnector} />
-      )}
+      {!isActive && <WalletDisconnectedUI />}
       {isActive && <WalletInfoUI />}
       <button
         className={styles.connect + " btn-primary"}
@@ -159,7 +204,7 @@ function ConnectWalletComponent({ onClose }: { onClose: () => void }) {
         ref={actionBtnRef}
       >
         {isInteractingWithConnector
-          ? "Loading..."
+          ? "Connecting..."
           : !hasMetaMaskExtensionInstalled()
           ? "Install Metamask"
           : isActive
